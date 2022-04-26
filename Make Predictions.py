@@ -2,6 +2,7 @@
 # Specific steps: Read from processed data/ Load trained model from file/ Pred
 
 ### --- LOAD DEPENDENCIES --- ###
+from sklearn.model_selection import train_test_split
 from libs.utils import *
 from sklearn.feature_extraction import text
 from sklearn.linear_model import LogisticRegression
@@ -9,8 +10,14 @@ import pandas as pd
 import numpy as np
 import pickle
 import gensim
-import re
+import argparse
 
+parser = argparse.ArgumentParser()
+parser.add_argument('--FilePath', type=str, default='Data/Example.tsv', help='Set path to the pred/training data')
+parser.add_argument('--Mode', type=str, default='PRED', help='Mode: PRED (default) for making predictions with pretrained model or \n TRAIN_EVAL for training a new model')
+parser.add_argument('--Text', type=str, default='STEM_TEXT', help='Choose from STEM_TEXT (default) of CLEAN_TEXT')
+
+args = parser.parse_args()
 
 
 
@@ -32,7 +39,7 @@ def preprocess_text(df):
     return df
 
 ### --- INPUT THE FILE NAME --- ###
-FILE = 'Data/Hold_out Validation.tsv' # Input the name of the user's file that include the PubMed Title and/or Abstract
+FILE = args.FilePath # Input the name of the user's file that include the PubMed Title and/or Abstract
 if '.tsv' in FILE:
     delimiter = '\t'
 else:
@@ -42,16 +49,26 @@ else:
 MODEL_NAME = 'TFIDF_LR_BEST_80%'
 
 # STEM_TEXT or CLEAN_TEXT
-TEXT = 'STEM_TEXT'
+TEXT = args.Text
 
 # 'PRED' or 'TRAIN_EVAL'
-MODE = 'PRED'
+MODE = args.Mode
 
 ### --- READ DATA --- ###
 #Load Dataset
 if MODE =='TRAIN_EVAL':
     print("Mode: Train and Evaluate")
-    Train_Data, Val_Data = pd.read_csv("Data/train.csv"),pd.read_csv("Data/val.csv")
+    Pred_Data = pd.read_csv(FILE, delimiter = delimiter)
+    Pred_Data['TEXT'] = Pred_Data['Title'].astype(str) + ' ' + Pred_Data['Abstract'].astype(str) # Concatenate the strings of the title and the abstract
+
+    ### --- PREPROCESSING --- ###
+    Pred_Data['CLEAN_TEXT'] = Pred_Data['TEXT'].str.lower()
+    Pred_Data = preprocess_text(Pred_Data)
+
+    ### --- STEM/CLEAN TEXT --- ###
+    pred_corpus= Pred_Data[TEXT]
+    
+    Train_Data, Val_Data = train_test_split(pred_corpus,test_size=0.2,random_state=42)
     train_corpus, val_corpus= Train_Data[TEXT], Val_Data[TEXT]
 
     #Preprocessing labels form boolean to int
