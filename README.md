@@ -10,7 +10,7 @@ Predict whether a publication is related to drug-induced liver injury or not bas
 ## How to use it to make prediction?
 1. Install the required packages listed in the requirements.txt, including gensim, numpy, pandas, scikit-learn, regex;
 2. Prepare the publication titles and/or abstracts in .csv or .tsv files (example format in ./Data);
-3. Run Make_Predictions.py with the args: *--FilePath [YOUR FILE LOCATION]* or use modify the default example file
+3. Run Make_Predictions.py with the args: *--FilePath [YOUR FILE LOCATION]* or modify the default Example.tsv file in the Data folder
 4. Harvest the predictions in the ./Result folder.
 
 ## Supplementary Code in ./DILI_manuscript
