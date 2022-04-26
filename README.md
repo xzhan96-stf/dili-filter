@@ -10,9 +10,8 @@ Predict whether a publication is related to drug-induced liver injury or not bas
 ## How to use it to make prediction?
 1. Install the required packages listed in the requirements.txt, including gensim, numpy, pandas, scikit-learn, regex;
 2. Prepare the publication titles and/or abstracts in .csv or .tsv files (example format in ./Data);
-3. Modify the FILE in Make Predictions.py to be with the correct directory and file name, while make sure that the MODE is 'PRED';
-4. Run Make Predictions.py;
-5. Harvest the predictions in the ./Result folder.
+3. Run Make_Predictions.py with the args: *--FilePath [YOUR FILE LOCATION]* or use modify the default example file
+4. Harvest the predictions in the ./Result folder.
 
 ## Supplementary Code in ./DILI_manuscript
 These are the example codes related to the experiments done in the manuscript entitled "Reliably Filter Drug-induced Liver Injury Literature with Natural Language Processing and Conformal Prediction" for reproducibility purposes. These codes are not necessary for the application of DILI filter in real-world scenarios.

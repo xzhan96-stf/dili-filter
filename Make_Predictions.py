@@ -3,7 +3,7 @@
 
 ### --- LOAD DEPENDENCIES --- ###
 from sklearn.model_selection import train_test_split
-from libs.utils import *
+from libs.utils import modelEval,getPredicts
 from sklearn.feature_extraction import text
 from sklearn.linear_model import LogisticRegression
 import pandas as pd
